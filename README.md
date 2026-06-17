@@ -49,7 +49,11 @@ cd mapa-mesh
 # 2. Instalar dependencias en entorno virtual
 bash install.sh
 
-# 3. Activar el entorno e iniciar
+# 3. Copiar y modificar .env.example
+cp .env.example .env
+vim .env
+
+# 4. Activar el entorno e iniciar
 source venv/bin/activate
 python3 mapa_mesh.py
 ```
@@ -62,7 +66,7 @@ Desde otros dispositivos en la misma red: `http://<IP-de-tu-PC>:8080`
 
 ## Configuración
 
-Al inicio de `mapa_mesh.py` hay una sección `CONFIGURACION` con las variables a editar antes de cada uso:
+ En el archivo `.env` se configura las variables a editar antes de cada uso:
 
 | Variable | Default | Descripción |
 |---|---|---|
@@ -83,6 +87,7 @@ meshtastic>=2.3.0      # SDK oficial de Meshtastic
 flask>=3.0.0           # Servidor web
 flask-socketio>=5.3.6  # WebSocket para tiempo real
 pypubsub>=4.0.3        # Eventos para callbacks de Meshtastic
+python-dotenv>=1.0.0   # Permite utilizar un fichero de configuración externo (.env)
 ```
 
 ---
@@ -181,7 +186,7 @@ mapa-mesh/
     └── mapa-mesh.key             # clave privada generada con openssl
 ```
 
-El programa detecta automáticamente los certificados al arrancar. Si no los encuentra, usa un certificado autofirmado como fallback.
+El programa detecta automáticamente los certificados al arrancar. Si no los encuentra, usa http. 
 
 **Generar la clave privada y CSR:**
 ```bash

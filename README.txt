@@ -36,12 +36,17 @@ INSTALACIÓN
 
      bash install.sh
 
-3. Activar el entorno e iniciar:
+3. Copiar y modificar el .env.example
+
+     cp .env.example .env
+     vim .env
+
+4. Activar el entorno e iniciar:
 
      source venv/bin/activate
      python3 mapa_mesh.py
 
-4. Abrir en el navegador:
+5. Abrir en el navegador:
 
      http://127.0.0.1:8080
 
@@ -52,7 +57,7 @@ INSTALACIÓN
 
 CONFIGURACIÓN
 -------------
-Al inicio del archivo mapa_mesh.py hay una sección CONFIGURACION con las
+En el archivo .env está la CONFIGURACION con las
 variables que hay que editar antes de cada uso:
 
   SERIAL_PORT            Puerto serial del nodo (default: /dev/ttyACM0)
@@ -81,6 +86,7 @@ DEPENDENCIAS (requirements.txt)
   flask>=3.0.0           Servidor web liviano
   flask-socketio>=5.3.6  WebSocket para actualizaciones en tiempo real
   pypubsub>=4.0.3        Sistema de eventos para callbacks de Meshtastic
+  python-dotenv>=1.0.0   Permite integrar variables desde un fichero externo (.env) 
 
 
 FUNCIONAMIENTO INTERNO
@@ -165,6 +171,7 @@ ARCHIVOS DEL PROYECTO
   logo_mesharg.png   Logo de MeshArg (servido en /logo)
   requirements.txt   Dependencias Python
   install.sh         Script de instalación del entorno virtual
+  .env.example       Fichero .env de ejemplo
   README.txt         Este archivo
 
 
