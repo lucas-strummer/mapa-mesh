@@ -1702,7 +1702,8 @@ def main():
     t_wd = threading.Thread(target=watchdog_thread, daemon=True, name="watchdog")
     t_wd.start()
 
-    log.info(f"Servidor en https://{BIND_HOST}:{BIND_PORT}")
+    # Inicia en https si existe el certificado SSL, sino levanta en http
+    log.info(f"Servidor en {'https' if _ssl_ctx else 'http'}://{BIND_HOST}:{BIND_PORT}")
     import os as _ssl_os
     _SSL_CERT = _ssl_os.path.join(_ssl_os.path.dirname(_ssl_os.path.abspath(__file__)), "ssl", "mapa-mesh.pem")
     _SSL_KEY  = _ssl_os.path.join(_ssl_os.path.dirname(_ssl_os.path.abspath(__file__)), "ssl", "mapa-mesh.key")
@@ -1711,8 +1712,8 @@ def main():
         log.info(f"Usando certificado SSL: {_SSL_CERT}")
         _ssl_ctx = (_SSL_CERT, _SSL_KEY)
     else:
-        log.warning("Certificados SSL no encontrados, usando adhoc (autofirmado)")
-        _ssl_ctx = 'adhoc'
+        log.warning("Certificados SSL no encontrados, usando http")
+        _ssl_ctx = 'None'
 
     socketio.run(app, host=BIND_HOST, port=BIND_PORT, debug=False, use_reloader=False, ssl_context=_ssl_ctx)
 
