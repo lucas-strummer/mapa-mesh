@@ -3,3 +3,4 @@ flask>=3.0.0
 flask-socketio>=5.3.6
 pypubsub>=4.0.3
 pyopenssl>=23.0.0
+python-dotenv>=1.0.0

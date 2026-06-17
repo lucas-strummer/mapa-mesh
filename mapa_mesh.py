@@ -21,9 +21,14 @@ from flask import Flask, Response, jsonify
 from flask_socketio import SocketIO
 from pubsub import pub
 
+from dotenv import load_dotenv
+load_dotenv()
+
 import meshtastic.serial_interface
 
+import os
 import os as _os_log
+
 _LOG_FILE = _os_log.path.join(_os_log.path.dirname(_os_log.path.abspath(__file__)), "mapa_mesh.log")
 
 logging.basicConfig(
@@ -46,35 +51,35 @@ log.info(f"Log guardado en: {_LOG_FILE}")
 #                               CONFIGURACION
 # =============================================================================
 
-SERIAL_PORT   = "/dev/ttyACM0"
-BIND_HOST     = "0.0.0.0"
-BIND_PORT     = 8080
+SERIAL_PORT = os.getenv("SERIAL_PORT", "/dev/ttyACM0")
+BIND_HOST = os.getenv("BIND_HOST", "0.0.0.0")
+BIND_PORT = int(os.getenv("BIND_PORT", "8080"))
 
 # Coordenadas de TU nodo (sin GPS — editá esto cada vez que cambies de lugar)
-HOME_LAT      = -34.606615
-HOME_LON      = -58.4355
+HOME_LAT = float(os.getenv("HOME_LAT", "-34.606615"))
+HOME_LON = float(os.getenv("HOME_LON", "-58.4355"))
 
 # Centro inicial del mapa y zoom
 MAP_CENTER_LAT  = HOME_LAT
 MAP_CENTER_LON  = HOME_LON
-MAP_CENTER_ZOOM = 12
+MAP_CENTER_ZOOM = int(os.getenv("MAP_CENTER_ZOOM", "12"))
 
 # Tiempo mínimo entre traceroutes al mismo nodo (segundos)
-TRACEROUTE_COOLDOWN_SEC = 60
+TRACEROUTE_COOLDOWN_SEC = int(os.getenv("TRACEROUTE_COOLDOWN_SEC", "60"))
 
 # Timeout para esperar respuesta de traceroute (segundos)
-TRACEROUTE_TIMEOUT_SEC  = 15
+TRACEROUTE_TIMEOUT_SEC = int(os.getenv("TRACEROUTE_TIMEOUT_SEC", "15"))
 
 # Borrar nodos no escuchados después de N horas
-PRUNE_AFTER_SEC = 36 * 60 * 60
+PRUNE_AFTER_SEC = int(os.getenv("PRUNE_AFTER_SEC", str(36 * 60 * 60)))
 
 # Intervalo de polling del frontend (segundos)
-POLL_REFRESH_SEC = 3
+POLL_REFRESH_SEC = int(os.getenv("POLL_REFRESH_SEC", "3"))
 
 # Watchdog: cada cuántos segundos verifica que Flask responde
-WATCHDOG_INTERVAL_SEC  = 30
+WATCHDOG_INTERVAL_SEC = int(os.getenv("WATCHDOG_INTERVAL_SEC", "30"))
 # Cuántos fallos consecutivos antes de reiniciar
-WATCHDOG_MAX_FAILS     = 3
+WATCHDOG_MAX_FAILS = int(os.getenv("WATCHDOG_MAX_FAILS", "3"))
 # Archivo de backup de estado (mismo directorio que el script)
 import os as _os
 BACKUP_FILE = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "state_backup.json")
@@ -427,7 +432,7 @@ def maybe_schedule_traceroute(node_id: str):
 #
 # =============================================================================
 
-NODEINFO_INTERVAL_SEC = 10 * 60  # cada 10 minutos
+NODEINFO_INTERVAL_SEC = int(os.getenv("NODEINFO_INTERVAL_SEC", str(10 * 60)))
 
 
 def send_nodeinfo_heartbeat():
@@ -1703,8 +1708,8 @@ def main():
     t_wd.start()
 
     import os as _ssl_os
-    _SSL_CERT = _ssl_os.path.join(_ssl_os.path.dirname(_ssl_os.path.abspath(__file__)), "ssl", "mapa-mesh.pem")
-    _SSL_KEY  = _ssl_os.path.join(_ssl_os.path.dirname(_ssl_os.path.abspath(__file__)), "ssl", "mapa-mesh.key")
+    _SSL_CERT = os.getenv("SSL_CERT", "ssl/mapa-mesh.pem")
+    _SSL_KEY  = os.getenv("SSL_KEY", "ssl/mapa-mesh.key")
     
     # Inicia en https si existe el certificado SSL, sino levanta en http
 
