@@ -43,7 +43,7 @@ Cuando un nodo manda su posición, el programa realiza automáticamente un trace
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/TenoTrash/mapa-mesh.git
+git clone https://github.com/lucas-strummer/mapa-mesh.git
 cd mapa-mesh
 
 # 2. Instalar dependencias en entorno virtual
@@ -220,3 +220,5 @@ Basado en ideas de grumpy_bot, mapa de LW7DFM, firmware de Meshtastic y cartel d
 ## Licencia
 
 MIT © [TenoTrash](https://github.com/TenoTrash)
+
+Forkeado por https://github.com/lucas-strummer 
